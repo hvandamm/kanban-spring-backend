@@ -1,6 +1,9 @@
 package com.example.demo1;
 
 import org.springframework.stereotype.Service;
+
+import com.example.demo1.exception.ResourceNotFoundException;
+
 import java.util.List;
 
 @Service
@@ -17,6 +20,12 @@ public class TaskService {
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
+
+    //get task by id.
+    public Task getTaskById(Long id) {
+    return taskRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+}
 
     // Save a new task to the database
     public Task createTask(Task task) {

@@ -1,6 +1,13 @@
 package com.example.demo1;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.demo1.dto.TaskRequest;
+
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 @RestController
@@ -19,10 +26,20 @@ public class TaskController {
         return taskService.getAllTasks();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+        Task task = taskService.getTaskById(id);
+        return ResponseEntity.ok(task);
+    }
+
     // POST Request to submit a new task: http://localhost:8080/api/tasks
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return taskService.createTask(task);
+    public ResponseEntity<Task> createTask(@Valid @RequestBody TaskRequest request) {
+        Task task = new Task();
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
+        // status logic handled in service layer
+        return new ResponseEntity<>(taskService.createTask(task), HttpStatus.CREATED);
     }
 
     // PUT Request to update a task: http://localhost:8080/api/tasks/1
