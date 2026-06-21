@@ -27,7 +27,7 @@ public class TaskServiceTest {
         inputTask.setTitle("Write Unit Tests");
         inputTask.setDescription("Learn Mockito framework");
 
-        Task savedTask = new Task(1L, "Write Unit Tests", "Learn Mockito framework", "TODO");
+        Task savedTask = new Task(1L, "Write Unit Tests", "Learn Mockito framework", TaskStatus.TODO);
         
         // Train our fake database to return our savedTask when save() is called
         when(taskRepository.save(any(Task.class))).thenReturn(savedTask);
@@ -37,6 +37,6 @@ public class TaskServiceTest {
 
         // THEN: Verify the business rules worked perfectly!
         assertNotNull(result.getId());
-        assertEquals("TODO", result.getStatus()); // Asserts that the default status was correctly applied
+        assertEquals(TaskStatus.TODO, result.getStatus()); // Asserts that the default status was correctly applied
     }
 }

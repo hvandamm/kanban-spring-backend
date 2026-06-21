@@ -1,6 +1,8 @@
 package com.example.demo1;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -9,9 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 @Entity
-@Data // Automatically generates all Getters, Setters, toString(), and equals() methods!
-@NoArgsConstructor // Automatically generates a blank constructor: public Task() {}
-@AllArgsConstructor // Automatically generates a constructor with all fields
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
 
     @Id
@@ -20,5 +22,7 @@ public class Task {
 
     private String title;
     private String description;
-    private String status;
+
+    @Enumerated(EnumType.STRING) // Stores "TODO", "IN_PROGRESS", etc., in the DB
+    private TaskStatus status;
 }

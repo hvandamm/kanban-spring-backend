@@ -13,4 +13,7 @@ public class TaskRequest {
 
     @Size(max = 500, message = "Description must not exceed 500 characters")
     private String description;
+
+    // Optional field for incoming requests (e.g., if a task is created straight into "IN_PROGRESS")
+    private String status; 
 }

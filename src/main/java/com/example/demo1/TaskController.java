@@ -3,15 +3,12 @@ package com.example.demo1;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.example.demo1.dto.TaskRequest;
-
 import jakarta.validation.Valid;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tasks") // Sets the base URL path for this controller
+@RequestMapping("/api/tasks")
 public class TaskController {
 
     private final TaskService taskService;
@@ -20,7 +17,6 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    // GET Request to fetch all tasks: http://localhost:8080/api/tasks
     @GetMapping
     public List<Task> getAllTasks() {
         return taskService.getAllTasks();
@@ -32,28 +28,33 @@ public class TaskController {
         return ResponseEntity.ok(task);
     }
 
-    // POST Request to submit a new task: http://localhost:8080/api/tasks
     @PostMapping
     public ResponseEntity<Task> createTask(@Valid @RequestBody TaskRequest request) {
         Task task = new Task();
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
-        // status logic handled in service layer
+        
+        // If your TaskRequest.getStatus() returns a String, handle it like this:
+        if (request.getStatus() != null) {
+            try {
+                task.setStatus(TaskStatus.valueOf(request.getStatus().toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                // Falls back to service default if an invalid string is sent
+                task.setStatus(null); 
+            }
+        }
+
         return new ResponseEntity<>(taskService.createTask(task), HttpStatus.CREATED);
     }
 
-    // PUT Request to update a task: http://localhost:8080/api/tasks/1
     @PutMapping("/{id}")
     public Task updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
+        // Note: Ensure your PUT requests send valid Enum keys (e.g. "IN_PROGRESS") in the JSON body
         return taskService.updateTask(id, updatedTask);
     }
 
-    // DELETE Request to destroy a task: http://localhost:8080/api/tasks/1
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
     }
-
-
-
 }

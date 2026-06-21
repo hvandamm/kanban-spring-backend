@@ -1,9 +1,7 @@
 package com.example.demo1;
 
 import org.springframework.stereotype.Service;
-
 import com.example.demo1.exception.ResourceNotFoundException;
-
 import java.util.List;
 
 @Service
@@ -11,48 +9,42 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
 
-    // Dependency Injection: Spring automatically passes the TaskRepository here
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
-    // Get all tasks from the database
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
-    //get task by id.
     public Task getTaskById(Long id) {
-    return taskRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
-}
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+    }
 
-    // Save a new task to the database
     public Task createTask(Task task) {
+        // Updated: Using the Enum value instead of a literal String
         if (task.getStatus() == null) {
-            task.setStatus("TODO"); // Default status for new tasks
+            task.setStatus(TaskStatus.TODO); 
         }
         return taskRepository.save(task);
     }
 
-    // Update an existing task's status or details
     public Task updateTask(Long id, Task updatedTask) {
         return taskRepository.findById(id)
             .map(existingTask -> {
                 existingTask.setTitle(updatedTask.getTitle());
                 existingTask.setDescription(updatedTask.getDescription());
-                existingTask.setStatus(updatedTask.getStatus());
+                existingTask.setStatus(updatedTask.getStatus()); // Maps the enum directly
                 return taskRepository.save(existingTask);
             })
-            .orElseThrow(() -> new RuntimeException("Task not found with id " + id));
+            .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + id));
     }
 
-    // Delete a task from the database
     public void deleteTask(Long id) {
         if (!taskRepository.existsById(id)) {
-            throw new RuntimeException("Task not found with id " + id);
+            throw new ResourceNotFoundException("Task not found with id " + id);
         }
         taskRepository.deleteById(id);
     }
-
 }
