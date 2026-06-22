@@ -1,10 +1,11 @@
 package com.example.demo1;
 
+import com.example.demo1.dto.TaskRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo1.dto.TaskRequest;
-import jakarta.validation.Valid;
+
 import java.util.List;
 
 @RestController
@@ -12,9 +13,11 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
+    private final BoardService boardService;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, BoardService boardService) {
         this.taskService = taskService;
+        this.boardService = boardService;
     }
 
     @GetMapping
@@ -30,17 +33,21 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<Task> createTask(@Valid @RequestBody TaskRequest request) {
+        // Fetch the board to which this task belongs
+        Board board = boardService.getBoardById(request.getBoardId());
+
         Task task = new Task();
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
-        
+        task.setBoard(board);
+
         // If your TaskRequest.getStatus() returns a String, handle it like this:
         if (request.getStatus() != null) {
             try {
                 task.setStatus(TaskStatus.valueOf(request.getStatus().toUpperCase()));
             } catch (IllegalArgumentException e) {
                 // Falls back to service default if an invalid string is sent
-                task.setStatus(null); 
+                task.setStatus(null);
             }
         }
 
