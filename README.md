@@ -18,8 +18,8 @@ Follow these instructions to clone, configure, and spin up the full-stack worksp
 
 ### 📋 Prerequisites
 Ensure you have the following installed on your machine:
-* **Java Development Kit (JDK) 17 or 21**
-* **Node.js** (v18.x or higher) & **npm**
+* **Java Development Kit (JDK) 21**
+* **Node.js** v22.23.1 & **npm**
 
 ---
 
