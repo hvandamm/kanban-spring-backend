@@ -32,7 +32,7 @@ git clone https://github.com/hvandamm/kanban-spring-backend.git
 cd kanban-spring-backend
 ```
 
-2. Run the applications:
+2. Run the application:
 
 macOS/Linux:
 ```bash
@@ -49,4 +49,4 @@ go to http://localhost:8080 to see your backend
 
 ### 2. Frontend Setup (react)
 
-go to [https://github.com/hvandamm/kanban-frontend] for installation instructions.
+go to https://github.com/hvandamm/kanban-frontend for installation instructions.
