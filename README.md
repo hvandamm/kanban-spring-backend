@@ -45,7 +45,7 @@ windows(powershell/cmd)
 mvnw.cmd spring-boot:run
 ```
 
-go to http://localhost:8080 to see your backend
+next you need to setup the frontend
 
 ### 2. Frontend Setup (react)
 
