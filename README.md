@@ -27,9 +27,9 @@ Ensure you have the following installed on your machine:
 ### 1. Backend Setup (Spring Boot)
 
 1. Open your terminal or command prompt and navigate to the backend directory:
-   ```bash
-   git clone https://github.com/hvandamm/kanban-spring-backend.git
-   cd kanban-spring-backend
+```bash
+git clone https://github.com/hvandamm/kanban-spring-backend.git
+cd kanban-spring-backend
 ```
 
 2. Run the applications:
